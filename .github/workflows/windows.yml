@@ -27,7 +27,7 @@ jobs:
           url: https://chunkyupdate.lemaik.de/ChunkyLauncher.jar
           target: jars
       - name: Build binary
-        run: jpackage.exe create-app-image --runtime-image chunkyjava --input jars/ --main-jar ${{ steps.downloadfile.outputs.filename }} --output chunkyImage
+        run: jpackage.exe --runtime-image chunkyjava --input jars/ --main-jar ${{ steps.downloadfile.outputs.filename }} --output chunkyImage
       - uses: actions/upload-artifact@v2
         with:
           name: chunky-launcher-windows
