@@ -26,7 +26,6 @@ jobs:
         with:
           url: https://chunkyupdate.lemaik.de/ChunkyLauncher.jar
           target: jars
-          auto-match: true
       - name: Build binary
         run: jpackage.exe --runtime-image chunkyjava --input jars/ --main-jar ${{ steps.downloadfile.outputs.filename }} --type app-image --output chunkyImage
       - uses: actions/upload-artifact@v2
