@@ -1,0 +1,17 @@
+name: Build standalone launcher for Windows
+
+on: [push, pull_request]
+
+jobs:
+  compile:
+    runs-on: windows-2019
+    name: Compile
+    steps:
+      - uses: actions/checkout@master
+        with:
+          submodules: true
+      - name: Setup java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 16
+      - run: jlink.exe --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
