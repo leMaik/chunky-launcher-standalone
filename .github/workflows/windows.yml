@@ -15,4 +15,14 @@ jobs:
         with:
           java-version: 16
           java-package: jdk+fx
-      - run: jlink.exe --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
+      - name: Build Java runtime image
+        run: jlink.exe --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
+      - name: Build Chunky launcher
+        run: gradlew :launcher:jar
+        working-directory: ./chunky
+      - name: Build binary
+        run: jpackage.exe --runtime-image chunkyjava --input chunky/launcher/build/libs/ --main-jar ChunkyLauncher.jar --type app-image --output chunkyImage
+      - uses: actions/upload-artifact@v2
+        with:
+          name: chunky-launcher-windows
+          path: ./chunkyImage/**/*
