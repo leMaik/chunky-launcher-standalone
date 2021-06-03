@@ -8,8 +8,8 @@ jobs:
     name: Compile
     steps:
       - uses: actions/checkout@master
-        with:
-          submodules: true
+        #with:
+        #  submodules: true
       - name: Setup java
         uses: actions/setup-java@v1
         with:
@@ -17,11 +17,18 @@ jobs:
           java-package: jdk+fx
       - name: Build Java runtime image
         run: jlink.exe --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
-      - name: Build Chunky launcher
-        run: .\gradlew.bat :launcher:jar --stacktrace
-        working-directory: ./chunky
+      #- name: Build Chunky launcher
+      #  run: .\gradlew.bat :launcher:jar --stacktrace
+      #  working-directory: ./chunky
+      - uses: suisei-cn/actions-download-file@v1
+        id: launcherjar
+        name: Download the file
+        with:
+          url: https://chunkyupdate.lemaik.de/ChunkyLauncher.jar
+          target: jars
+          auto-match: true
       - name: Build binary
-        run: jpackage.exe --runtime-image chunkyjava --input chunky/launcher/build/libs/ --main-jar ChunkyLauncher.jar --type app-image --output chunkyImage
+        run: jpackage.exe --runtime-image chunkyjava --input jars/ --main-jar ${{ steps.downloadfile.outputs.filename }} --type app-image --output chunkyImage
       - uses: actions/upload-artifact@v2
         with:
           name: chunky-launcher-windows
