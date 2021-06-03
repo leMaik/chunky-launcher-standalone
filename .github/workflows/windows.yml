@@ -18,7 +18,7 @@ jobs:
       - name: Build Java runtime image
         run: jlink.exe --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
       - name: Build Chunky launcher
-        run: gradlew :launcher:jar
+        run: gradlew.bat :launcher:jar
         working-directory: ./chunky
       - name: Build binary
         run: jpackage.exe --runtime-image chunkyjava --input chunky/launcher/build/libs/ --main-jar ChunkyLauncher.jar --type app-image --output chunkyImage
