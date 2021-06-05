@@ -43,7 +43,7 @@ jobs:
           jpackage.exe --type app-image --runtime-image chunkyjava --input jars/
           --main-jar ${{ steps.launcherjar.outputs.filename }} --dest chunkyImage --name "Chunky Launcher"
           --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
-          --win-dir-chooser --win-menu --win-shortcut --icon chunky.ico
+          --icon chunky.ico
       - uses: actions/upload-artifact@v2
         with:
           name: windows-zip
