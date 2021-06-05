@@ -16,7 +16,9 @@ jobs:
           java-version: 16
           java-package: jdk+fx
       - name: Build Java runtime image
-        run: jlink.exe --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
+        run: >
+          jlink.exe --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
+          --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
       #- name: Build Chunky launcher
       #  run: .\gradlew.bat :launcher:jar --stacktrace
       #  working-directory: ./chunky
@@ -26,9 +28,23 @@ jobs:
         with:
           url: https://chunkyupdate.lemaik.de/ChunkyLauncher.jar
           target: jars
-      - name: Build binary
-        run: jpackage.exe --type app-image --runtime-image chunkyjava --input jars/ --main-jar ${{ steps.launcherjar.outputs.filename }} --dest chunkyImage --name "Chunky Launcher" --vendor leMaik --app-version 1.12.1 --copyright "Chunky is Copyright (c) 2010-2021 Chunky contributors"
+      - name: Build installer
+        run: >
+          jpackage.exe --type exe --runtime-image chunkyjava --input jars/
+          --main-jar ${{ steps.launcherjar.outputs.filename }} --name "Chunky Launcher"
+          --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
+          --win-dir-chooser --win-menu --win-shortcut --icon chunky.ico
       - uses: actions/upload-artifact@v2
         with:
-          name: chunky-launcher-windows
+          name: windows-installer
+          path: ./*.exe
+      - name: Build zip
+        run: >
+          jpackage.exe --type app-image --runtime-image chunkyjava --input jars/
+          --main-jar ${{ steps.launcherjar.outputs.filename }} --dest chunkyImage --name "Chunky Launcher"
+          --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
+          --win-dir-chooser --win-menu --win-shortcut --icon chunky.ico
+      - uses: actions/upload-artifact@v2
+        with:
+          name: windows-zip
           path: ./chunkyImage/**/*
