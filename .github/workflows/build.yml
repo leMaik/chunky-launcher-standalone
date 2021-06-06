@@ -62,7 +62,7 @@ jobs:
           java-package: jdk+fx
       - name: Build Java runtime image
         run: >
-          jlink.exe --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
+          jlink --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
           --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
       #- name: Build Chunky launcher
       #  run: .\gradlew.bat :launcher:jar --stacktrace
@@ -75,7 +75,7 @@ jobs:
           target: jars
       - name: Build deb package
         run: >
-          jpackage.exe --type deb --runtime-image chunkyjava --input jars/
+          jpackage --type deb --runtime-image chunkyjava --input jars/
           --main-jar ${{ steps.launcherjar.outputs.filename }} --name "Chunky Launcher"
           --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
           --linux-bundle-name chunky-launcher --icon chunky.png
@@ -85,7 +85,7 @@ jobs:
           path: ./*.deb
       - name: Build zip
         run: >
-          jpackage.exe --type app-image --runtime-image chunkyjava --input jars/
+          jpackage --type app-image --runtime-image chunkyjava --input jars/
           --main-jar ${{ steps.launcherjar.outputs.filename }} --dest chunkyImage --name "Chunky Launcher"
           --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
           --icon chunky.png
