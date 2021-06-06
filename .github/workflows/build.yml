@@ -31,7 +31,7 @@ jobs:
       - name: Build installer
         run: >
           jpackage.exe --type exe --runtime-image chunkyjava --input jars/
-          --main-jar ${{ steps.launcherjar.outputs.filename }} --name "Chunky Launcher"
+          --main-jar ${{ steps.launcherjar.outputs.filename }} --name Chunky
           --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
           --win-dir-chooser --win-menu --win-shortcut --icon chunky.ico
       - uses: actions/upload-artifact@v2
@@ -41,7 +41,7 @@ jobs:
       - name: Build zip
         run: >
           jpackage.exe --type app-image --runtime-image chunkyjava --input jars/
-          --main-jar ${{ steps.launcherjar.outputs.filename }} --dest chunkyImage --name "Chunky Launcher"
+          --main-jar ${{ steps.launcherjar.outputs.filename }} --dest chunkyImage --name Chunky
           --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
           --icon chunky.ico
       - uses: actions/upload-artifact@v2
@@ -50,7 +50,7 @@ jobs:
           path: ./chunkyImage/**/*
   linux:
     runs-on: ubuntu-20.04
-    name: Compile
+    name: Linux
     steps:
       - uses: actions/checkout@master
         #with:
@@ -76,9 +76,9 @@ jobs:
       - name: Build deb package
         run: >
           jpackage --type deb --runtime-image chunkyjava --input jars/
-          --main-jar ${{ steps.launcherjar.outputs.filename }} --name "Chunky Launcher"
+          --main-jar ${{ steps.launcherjar.outputs.filename }} --name Chunky
           --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
-          --linux-package-name chunky-launcher --linux-app-release 1.12.1 --linux-app-category Graphics
+          --linux-package-name chunky-launcher --linux-menu-group Graphics
           --linux-shortcut --icon chunky.png
           --java-options -Djdk.gtk.version=2
       - uses: actions/upload-artifact@v2
