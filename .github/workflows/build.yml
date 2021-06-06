@@ -1,11 +1,11 @@
-name: Build standalone launcher for Windows
+name: Build standalone launcher
 
 on: [push, pull_request]
 
 jobs:
   windows:
     runs-on: windows-2019
-    name: Compile
+    name: Windows
     steps:
       - uses: actions/checkout@master
         #with:
@@ -78,7 +78,8 @@ jobs:
           jpackage --type deb --runtime-image chunkyjava --input jars/
           --main-jar ${{ steps.launcherjar.outputs.filename }} --name "Chunky Launcher"
           --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
-          --linux-bundle-name chunky-launcher --icon chunky.png
+          --linux-package-name chunky-launcher --linux-app-release 1.12.1 --linux-app-category Graphics
+          --linux-shortcut --icon chunky.png
       - uses: actions/upload-artifact@v2
         with:
           name: linux-deb
