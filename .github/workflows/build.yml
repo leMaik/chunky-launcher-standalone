@@ -96,8 +96,7 @@ jobs:
         with:
           name: linux-zip
           path: ./chunkyImage/**/*
-
-  macOS:
+  macos:
     runs-on: macos-latest
     name: macOS
     steps:
@@ -131,5 +130,5 @@ jobs:
           --dest chunkyImage
       - uses: actions/upload-artifact@v2
         with:
-          name: macOS-DMG
+          name: macos-dmg
           path: ./chunkyImage/*.dmg
