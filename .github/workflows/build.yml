@@ -10,45 +10,64 @@ jobs:
       - uses: actions/checkout@master
         #with:
         #  submodules: true
+        
       - name: Setup java
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt-hotspot'
           java-version: '16'
           java-package: jdk
+          
+      - name: Download JavaFX
+        uses: suisei-cn/actions-download-file@v1
+        id: javafxjmods
+        with:
+          url: https://download2.gluonhq.com/openjfx/16/openjfx-16_windows-x64_bin-jmods.zip
+          target: JavaFX
+      
+      - name: Unpack JavaFX
+        run: >
+          tar -xf ${{ steps.javafxjmods.outputs.filename }}
+      
       - name: Build Java runtime image
         run: >
-          jlink.exe --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
+          jlink.exe --module-path javafxjmods/javafx-jmods-16 --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
           --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
       #- name: Build Chunky launcher
       #  run: .\gradlew.bat :launcher:jar --stacktrace
       #  working-directory: ./chunky
+      
       - uses: suisei-cn/actions-download-file@v1
         id: launcherjar
         name: Download the file
         with:
           url: https://chunkyupdate.lemaik.de/ChunkyLauncher.jar
           target: jars
+          
       - name: Build installer
         run: >
           jpackage.exe --type exe --runtime-image chunkyjava --input jars/
           --main-jar ${{ steps.launcherjar.outputs.filename }} --name Chunky
           --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
           --win-dir-chooser --win-menu --win-shortcut --icon chunky.ico
+          
       - uses: actions/upload-artifact@v2
         with:
           name: windows-installer
           path: ./*.exe
+          
       - name: Build zip
         run: >
           jpackage.exe --type app-image --runtime-image chunkyjava --input jars/
           --main-jar ${{ steps.launcherjar.outputs.filename }} --dest chunkyImage --name Chunky
           --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
           --icon chunky.ico
+          
       - uses: actions/upload-artifact@v2
         with:
           name: windows-zip
           path: ./chunkyImage/**/*
+          
   linux:
     runs-on: ubuntu-20.04
     name: Linux
@@ -56,25 +75,40 @@ jobs:
       - uses: actions/checkout@master
         #with:
         #  submodules: true
+        
       - name: Setup java
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt-hotspot'
           java-version: '16'
           java-package: jdk
+          
+      - name: Download JavaFX
+        uses: suisei-cn/actions-download-file@v1
+        id: javafxjmods
+        with:
+          url: https://download2.gluonhq.com/openjfx/16/openjfx-16_linux-x64_bin-jmods.zip
+          target: JavaFX
+      
+      - name: Unpack JavaFX
+        run: >
+          tar -xf ${{ steps.javafxjmods.outputs.filename }}
+          
       - name: Build Java runtime image
         run: >
-          jlink --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
+          jlink --module-path javafxjmods/javafx-jmods-16 --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
           --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
       #- name: Build Chunky launcher
       #  run: .\gradlew.bat :launcher:jar --stacktrace
       #  working-directory: ./chunky
+      
       - uses: suisei-cn/actions-download-file@v1
         id: launcherjar
         name: Download the file
         with:
           url: https://chunkyupdate.lemaik.de/ChunkyLauncher.jar
           target: jars
+          
       - name: Build deb package
         run: >
           jpackage --type deb --runtime-image chunkyjava --input jars/
@@ -83,10 +117,12 @@ jobs:
           --linux-package-name chunky-launcher --linux-menu-group Graphics
           --linux-shortcut --icon chunky.png
           --java-options -Djdk.gtk.version=2
+          
       - uses: actions/upload-artifact@v2
         with:
           name: linux-deb
           path: ./*.deb
+          
       - name: Build zip
         run: >
           jpackage --type app-image --runtime-image chunkyjava --input jars/
@@ -94,6 +130,7 @@ jobs:
           --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
           --icon chunky.png
           --java-options -Djdk.gtk.version=2
+          
       - uses: actions/upload-artifact@v2
         with:
           name: linux-zip
