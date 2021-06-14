@@ -1,7 +1,7 @@
 name: Build standalone launcher
 
 on: [push, pull_request]
- 
+
 jobs:
   windows:
     runs-on: windows-2019
@@ -14,7 +14,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt-hotspot'
-          java-version: 16
+          java-version: '16.0.1+9'
           java-package: jdk+fx
       - name: Build Java runtime image
         run: >
@@ -60,7 +60,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt-hotspot'
-          java-version: 16
+          java-version: '16.0.1+9'
           java-package: jdk+fx
       - name: Build Java runtime image
         run: >
