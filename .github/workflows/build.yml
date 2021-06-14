@@ -13,9 +13,9 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'adopt-hotspot'
           java-version: '16'
-          java-package: jdk+fx
+          java-package: jdk
       - name: Build Java runtime image
         run: >
           jlink.exe --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
@@ -59,9 +59,9 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
+          distribution: 'adopt-hotspot'
           java-version: '16'
-          java-package: jdk+fx
+          java-package: jdk
       - name: Build Java runtime image
         run: >
           jlink --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
