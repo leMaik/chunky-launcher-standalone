@@ -13,8 +13,8 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt-hotspot'
-          java-version: '16.0.1'
+          distribution: 'adopt'
+          java-version: '16'
           java-package: jdk+fx
       - name: Build Java runtime image
         run: >
@@ -59,8 +59,8 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt-hotspot'
-          java-version: '16.0.1'
+          distribution: 'adopt'
+          java-version: '16'
           java-package: jdk+fx
       - name: Build Java runtime image
         run: >
