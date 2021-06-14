@@ -27,7 +27,7 @@ jobs:
       
       - name: Unpack JavaFX
         run: >
-          tar -xf javafxjmods/openjfx-16_windows-x64_bin-jmods.zip
+          tar -xf JavaFX/openjfx-16_windows-x64_bin-jmods.zip
       
       - name: Build Java runtime image
         run: >
@@ -92,7 +92,7 @@ jobs:
       
       - name: Unpack JavaFX
         run: >
-          tar -xf javafxjmods/openjfx-16_linux-x64_bin-jmods.zip
+          tar -xf JavaFX/openjfx-16_linux-x64_bin-jmods.zip
           
       - name: Build Java runtime image
         run: >
