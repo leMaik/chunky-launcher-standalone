@@ -127,7 +127,6 @@ jobs:
           --main-jar ${{ steps.launcherjar.outputs.filename }} --name Chunky
           --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
           --icon chunky.icns
-          --dest chunkyImage
       - uses: actions/upload-artifact@v2
         with:
           name: macos-dmg
