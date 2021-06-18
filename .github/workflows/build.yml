@@ -96,3 +96,38 @@ jobs:
         with:
           name: linux-zip
           path: ./chunkyImage/**/*
+  macos:
+    runs-on: macos-latest
+    name: macOS
+    steps:
+      - uses: actions/checkout@master
+        #with:
+        #  submodules: true
+      - name: Setup java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 16
+          java-package: jdk+fx
+      - name: Build Java runtime image
+        run: >
+          jlink --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
+          --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
+      #- name: Build Chunky launcher
+      #  run: .\gradlew.bat :launcher:jar --stacktrace
+      #  working-directory: ./chunky
+      - uses: suisei-cn/actions-download-file@v1
+        id: launcherjar
+        name: Download the file
+        with:
+          url: https://chunkyupdate.lemaik.de/ChunkyLauncher.jar
+          target: jars
+      - name: Build DMG package
+        run: >
+          jpackage --type dmg --runtime-image chunkyjava --input jars/
+          --main-jar ${{ steps.launcherjar.outputs.filename }} --name Chunky
+          --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
+          --icon chunky.icns
+      - uses: actions/upload-artifact@v2
+        with:
+          name: macos-dmg
+          path: ./*.dmg
