@@ -142,11 +142,25 @@ jobs:
       - uses: actions/checkout@master
         #with:
         #  submodules: true
+     
       - name: Setup java
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v2
         with:
-          java-version: 16
-          java-package: jdk+fx
+          distribution: 'adopt-hotspot'
+          java-version: '16'
+          java-package: jdk
+          
+      - name: Download JavaFX
+        uses: suisei-cn/actions-download-file@v1
+        id: javafxjmods
+        with:
+          url: https://download2.gluonhq.com/openjfx/11.0.2/openjfx-11.0.2_osx-x64_bin-jmods.zip
+          target: JavaFX
+      
+      - name: Unpack JavaFX
+        run: >
+          unzip JavaFX/openjfx-16_linux-x64_bin-jmods.zip
+          
       - name: Build Java runtime image
         run: >
           jlink --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
@@ -154,18 +168,21 @@ jobs:
       #- name: Build Chunky launcher
       #  run: .\gradlew.bat :launcher:jar --stacktrace
       #  working-directory: ./chunky
+      
       - uses: suisei-cn/actions-download-file@v1
         id: launcherjar
         name: Download the file
         with:
           url: https://chunkyupdate.lemaik.de/ChunkyLauncher.jar
           target: jars
+          
       - name: Build DMG package
         run: >
           jpackage --type dmg --runtime-image chunkyjava --input jars/
           --main-jar ${{ steps.launcherjar.outputs.filename }} --name Chunky
           --vendor leMaik --app-version 1.12.1 --copyright "Copyright (c) 2010-2021 Chunky contributors"
           --icon chunky.icns
+          
       - uses: actions/upload-artifact@v2
         with:
           name: macos-dmg
