@@ -163,7 +163,7 @@ jobs:
           
       - name: Build Java runtime image
         run: >
-          jlink --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
+          jlink --module-path javafx-jmods-16/ --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
           --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
       #- name: Build Chunky launcher
       #  run: .\gradlew.bat :launcher:jar --stacktrace
