@@ -1,6 +1,6 @@
 name: Build standalone launcher
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   windows:
@@ -14,24 +14,24 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt-hotspot'
-          java-version: '16'
+          distribution: 'temurin'
+          java-version: '17'
           java-package: jdk
           
       - name: Download JavaFX
         uses: suisei-cn/actions-download-file@v1
         id: javafxjmods
         with:
-          url: https://download2.gluonhq.com/openjfx/16/openjfx-16_windows-x64_bin-jmods.zip
+          url: https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_windows-x64_bin-jmods.zip
           target: JavaFX
       
       - name: Unpack JavaFX
         run: >
-          tar -xf JavaFX/openjfx-16_windows-x64_bin-jmods.zip
+          tar -xf JavaFX/openjfx-17.0.0.1_windows-x64_bin-jmods.zip
       
       - name: Build Java runtime image
         run: >
-          jlink.exe --module-path javafx-jmods-16/ --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
+          jlink.exe --module-path javafx-jmods-17.0.0.1/ --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
           --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
       #- name: Build Chunky launcher
       #  run: .\gradlew.bat :launcher:jar --stacktrace
@@ -79,24 +79,24 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt-hotspot'
-          java-version: '16'
+          distribution: 'temurin'
+          java-version: '17'
           java-package: jdk
           
       - name: Download JavaFX
         uses: suisei-cn/actions-download-file@v1
         id: javafxjmods
         with:
-          url: https://download2.gluonhq.com/openjfx/16/openjfx-16_linux-x64_bin-jmods.zip
+          url: https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_linux-x64_bin-jmods.zip
           target: JavaFX
       
       - name: Unpack JavaFX
         run: >
-          unzip JavaFX/openjfx-16_linux-x64_bin-jmods.zip
+          unzip JavaFX/openjfx-17.0.0.1_linux-x64_bin-jmods.zip
           
       - name: Build Java runtime image
         run: >
-          jlink --module-path javafx-jmods-16/ --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
+          jlink --module-path javafx-jmods-17.0.0.1/ --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
           --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
       #- name: Build Chunky launcher
       #  run: .\gradlew.bat :launcher:jar --stacktrace
@@ -146,24 +146,24 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt-hotspot'
-          java-version: '16'
+          distribution: 'temurin'
+          java-version: '17'
           java-package: jdk
           
       - name: Download JavaFX
         uses: suisei-cn/actions-download-file@v1
         id: javafxjmods
         with:
-          url: https://download2.gluonhq.com/openjfx/16/openjfx-16_osx-x64_bin-jmods.zip
+          url: https://download2.gluonhq.com/openjfx/17.0.0.1/openjfx-17.0.0.1_osx-x64_bin-jmods.zip
           target: JavaFX
       
       - name: Unpack JavaFX
         run: >
-          unzip JavaFX/openjfx-16_osx-x64_bin-jmods.zip
+          unzip JavaFX/openjfx-17.0.0.1_osx-x64_bin-jmods.zip
           
       - name: Build Java runtime image
         run: >
-          jlink --module-path javafx-jmods-16/ --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
+          jlink --module-path javafx-jmods-17.0.0.1/ --add-modules java.base,java.desktop,java.management,javafx.base,javafx.controls,javafx.fxml,jdk.crypto.ec
           --compress=2 --strip-debug --no-header-files --no-man-pages --output chunkyjava
       #- name: Build Chunky launcher
       #  run: .\gradlew.bat :launcher:jar --stacktrace
